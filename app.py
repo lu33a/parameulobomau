@@ -1,48 +1,77 @@
 import streamlit as st
-import time
 
+# Configurando a página
 st.set_page_config(page_title="Relatório de Auditoria", page_icon="🚨", layout="centered")
 
-# --- TRUQUE NINJA PARA OS CORAÇÕES ---
-def coracoes():
-    # Isso aqui é um pequeno código em CSS que faz os corações "choverem" na tela
-    st.markdown("""
-        <style>
-        .heart { color: red; font-size: 30px; position: fixed; top: -10%; z-index: 9999; animation: fall 3s linear forwards; }
-        @keyframes fall { to { top: 110%; transform: rotate(360deg); } }
-        </style>
-        <div class="heart" style="left:10%">❤️</div><div class="heart" style="left:30%">❤️</div>
-        <div class="heart" style="left:50%">❤️</div><div class="heart" style="left:70%">❤️</div>
-        <div class="heart" style="left:90%">❤️</div>
-    """, unsafe_allow_html=True)
+# Criando a memória do site (Session State) para o jogo funcionar por etapas
+if 'fase' not in st.session_state:
+    st.session_state.fase = 1
+if 'janta' not in st.session_state:
+    st.session_state.janta = ""
 
-st.title("🚨 NOTIFICAÇÃO OFICIAL DO SISTEMA 🚨")
-st.write("Auditoria de saudade nível crítico detectada.")
-
-st.markdown("---")
-
-resposta_1 = st.radio(
-    "1. Quem é a namorada mais braba do RJ?",
-    ["Selecione...", "Maria Luíza", "Outra opção"]
-)
-
-if resposta_1 == "Maria Luíza":
-    st.balloons()
-    st.success("🎯 Resposta correta!")
+# --- FASE 1: PERGUNTA DA NAMORADA ---
+if st.session_state.fase == 1:
+    st.title("🚨 NOTIFICAÇÃO OFICIAL DE AUDITORIA 🚨")
+    st.write("O sistema detectou níveis críticos de saudade nas últimas horas.")
+    st.markdown("---")
     
-    opcao_janta = st.selectbox(
-        "O que vamos jantar hoje?",
-        ["Escolha...", "Açai", "Hamburguer", "O que você quiser eu pago, minha deusa!"]
+    resposta_1 = st.radio(
+        "1. Quem é oficialmente a namorada mais braba de todo o estado do Rio de Janeiro?",
+        ["Selecione...", "Maria Luíza (Obviamente)", "Outra opção"]
     )
     
-    if opcao_janta != "Escolha...":
-        st.snow()
-        st.markdown("### 🔥 ACORDO FECHADO!")
-        st.write(f"Protocolo registrado: **{opcao_janta}**.")
+    if resposta_1 == "Maria Luíza (Obviamente)":
+        st.balloons() # Balões na hora do acerto
+        st.session_state.fase = 2
+        st.rerun()
         
-        # --- O GRAN FINALE ---
-        st.markdown("---")
-        if st.button("CLIQUE AQUI PARA ENCERRAR O PROTOCOLO"):
-            coracoes() # Chama a função dos corações
-            st.header("💖 Yuri, você é um gostoso! 💖")
-            st.write("Te amo! Vejo você mais tarde. 🥰")
+    elif resposta_1 == "Outra opção":
+        st.error("❌ ERRO 404: Opção totalmente inválida. Tente novamente.")
+
+# --- FASE 2: ESCOLHA DA JANTA ---
+elif st.session_state.fase == 2:
+    st.title("⏳ FASE 2: CONFIGURAÇÃO DO PROTOCOLO")
+    st.write("Identidade confirmada com sucesso. Agora, defina os parâmetros da janta:")
+    st.markdown("---")
+    
+    opcao_janta = st.selectbox(
+        "O que vamos jantar hoje para comemorar que é sexta-feira?",
+        ["Escolha o cardápio...", "Açai", "Hambúrguer", "O que você quiser, eu pago, minha deusa"]
+    )
+    
+    if opcao_janta != "Escolha o cardápio...":
+        st.snow() # Neve na hora de fechar a janta
+        st.session_state.janta = opcao_janta
+        st.session_state.fase = 3
+        st.rerun()
+
+# --- FASE 3: O ACORDO ---
+elif st.session_state.fase == 3:
+    st.title("🔥 PROTOCOLO EMITIDO COM SUCESSO!")
+    st.write(f"O sistema registrou a janta: **{st.session_state.janta}**.")
+    st.write("Não aceitamos cancelamentos ou estornos após a emissão deste documento.")
+    st.markdown("---")
+    
+    if st.button("CLIQUE AQUI PARA VALIDAR O CERTIFICADO FINAL"):
+        st.session_state.fase = 4
+        st.rerun()
+
+# --- FASE 4: O GRAN FINALE (O Alvo Principal) ---
+elif st.session_state.fase == 4:
+    st.markdown("<br><br>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center; font-size: 70px;'>❤️❤️❤️❤️</h1>", unsafe_allow_html=True)
+    
+    # Mensagem principal estourando na tela
+    st.markdown("<h1 style='text-align: center; color: #ff4b4b; font-size: 45px; font-weight: bold;'>YURI, VOCÊ É UM GOSTOSO!</h1>", unsafe_allow_html=True)
+    
+    st.markdown("<h1 style='text-align: center; font-size: 70px;'>❤️❤️❤️❤️</h1>", unsafe_allow_html=True)
+    
+    # Fechamento fofo completo
+    st.markdown("<p style='text-align: center; font-size: 26px; font-weight: bold; color: #333;'>Te amo!</p>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; font-size: 22px; color: #555;'>Vejo você mais tarde. 🥰</p>", unsafe_allow_html=True)
+    
+    # Botão discreto na lateral caso queira testar de novo
+    if st.sidebar.button("Reiniciar Sistema 🔄"):
+        st.session_state.fase = 1
+        st.session_state.janta = ""
+        st.rerun()
