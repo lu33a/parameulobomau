@@ -23,7 +23,7 @@ st.markdown("---")
 
 resposta_1 = st.radio(
     "1. Quem é a namorada mais braba do RJ?",
-    ["Selecione...", "Maria Luíza ", "Outra opção"]
+    ["Selecione...", "Maria Luíza", "Outra opção"]
 )
 
 if resposta_1 == "Maria Luíza":
