@@ -1,38 +1,48 @@
 import streamlit as st
 import time
 
-# Configurando a página com título secreto e emoji
-st.set_page_config(page_title="Alerta Urgente", page_icon="🚨", layout="centered")
+st.set_page_config(page_title="Relatório de Auditoria", page_icon="🚨", layout="centered")
+
+# --- TRUQUE NINJA PARA OS CORAÇÕES ---
+def coracoes():
+    # Isso aqui é um pequeno código em CSS que faz os corações "choverem" na tela
+    st.markdown("""
+        <style>
+        .heart { color: red; font-size: 30px; position: fixed; top: -10%; z-index: 9999; animation: fall 3s linear forwards; }
+        @keyframes fall { to { top: 110%; transform: rotate(360deg); } }
+        </style>
+        <div class="heart" style="left:10%">❤️</div><div class="heart" style="left:30%">❤️</div>
+        <div class="heart" style="left:50%">❤️</div><div class="heart" style="left:70%">❤️</div>
+        <div class="heart" style="left:90%">❤️</div>
+    """, unsafe_allow_html=True)
 
 st.title("🚨 NOTIFICAÇÃO OFICIAL DO SISTEMA 🚨")
-st.write("Um relatório de auditoria interna apontou níveis críticos de saudade nas últimas horas.")
+st.write("Auditoria de saudade nível crítico detectada.")
 
 st.markdown("---")
 
-# Pergunta interativa 1
 resposta_1 = st.radio(
-    "1. Quem é oficialmente a namorada mais braba de todo o estado do Rio de Janeiro?",
-    ["Selecione...", "Maria Luíza (Obviamente)", "Outra opção (Gera erro no sistema)"]
+    "1. Quem é a namorada mais braba do RJ?",
+    ["Selecione...", "Maria Luíza ", "Outra opção"]
 )
 
-if resposta_1 == "Maria Luíza (Obviamente)":
+if resposta_1 == "Maria Luíza":
     st.balloons()
-    st.success("🎯 Resposta correta! Você ganhou +1000 pontos de bom namorado e um vale-beijo (retirada presencial).")
+    st.success("🎯 Resposta correta!")
     
-    st.markdown("### Fase 2: O Próximo Passo")
-    st.write("Agora que você provou sua idoneidade, responda com sinceridade:")
-    
-    # Pergunta 2
     opcao_janta = st.selectbox(
-        "O que vamos jantar hoje para comemorar que é sexta-feira?",
-        ["Escolha o cardápio...", "Açai", "Hamburguer", "O que você quiser, eu pago"]
+        "O que vamos jantar hoje?",
+        ["Escolha...", "Açai", "Hamburguer", "O que você quiser eu pago, minha deusa!"]
     )
     
-    if opcao_janta != "Escolha o cardápio...":
-        st.snow() # Efeito de neve caindo
-        st.markdown(f"### 🔥 ACORDO FECHADO!")
-        st.write(f"O sistema registrou a opção: **{opcao_janta}**.")
-        st.write("Não aceitamos cancelamentos ou estornos após a emissão deste protocolo.")
+    if opcao_janta != "Escolha...":
+        st.snow()
+        st.markdown("### 🔥 ACORDO FECHADO!")
+        st.write(f"Protocolo registrado: **{opcao_janta}**.")
         
-elif resposta_1 == "Outra opção (Gera erro no sistema)":
-    st.error("❌ ERRO 404: Opção totalmente inválida. Tente novamente antes que o clima azede na sua linha do tempo.")
+        # --- O GRAN FINALE ---
+        st.markdown("---")
+        if st.button("CLIQUE AQUI PARA ENCERRAR O PROTOCOLO"):
+            coracoes() # Chama a função dos corações
+            st.header("💖 Yuri, você é um gostoso! 💖")
+            st.write("Te amo! Vejo você mais tarde. 🥰")
